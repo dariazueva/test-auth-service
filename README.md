@@ -1,9 +1,9 @@
 # test-auth-service
-FastAPI E-commerce App
+Auth Service
 
 ## Описание
 
-Этот проект представляет собой backend интернет магазина с системой ролей, управлением товарами, категориями и отзывами.
+Микросервис аутентификации на FastAPI с JWT токенами и PostgreSQL
 
 ## Требования
 
@@ -17,18 +17,13 @@ FastAPI E-commerce App
 - JWT
 
 ### Основной функционал
-- Регистрация и авторизация (JWT)
-- Роли пользователей:
-    - Admin - полные права
-    - Supplier - управление товарами
-    - Customer - просмотр и покупки
-- CRUD для:
-    - Категорий и подкатегорий
-    - Продуктов с поддержкой slug
-    - Отзывов с рейтингами
-- Логирование всех запросов
-- Назначение и снятие статуса поставщика
-- Мягкое удаление пользователей, категорий, товаров и отзывов
+- Регистрация и авторизация
+- Аутентификация (JWT)
+- Обновление токенов
+- Выход из системы
+- Управление пользователями (CRUD)
+- Проверка токенов
+- Ролевая модель (админ\пользователь)
 
 ### Как запустить проект:
 
@@ -57,7 +52,7 @@ python -m pip install --upgrade pip
 ```
 Создайте файл .env и заполните его своими данными по образцу:
 ```
-ENGINE_URL=postgresql+asyncpg://authservice_user:mysecretpassword@localhost:5432/authservice
+ENGINE_URL=postgresql+asyncpg://authservice_user:mysecretpassword@db:5432/authservice
 SECRET_KEY=your_secret_key
 ALGORITHM=HS256
 ```
@@ -73,6 +68,19 @@ docker-compose exec web alembic upgrade head
 #### API Документация:
 Swagger - http://localhost:8000/docs
 Redoc - http://localhost:8000/redoc
+
+#### API Endpoints
+##### Аутентификация
+* POST /auth/register - Регистрация нового пользователя
+* POST /auth/token - Получение JWT токенов
+* POST /auth/refresh - Обновление токенов
+* POST /auth/logout - Выход из системы
+* GET /auth/me - Получение данных текущего пользователя
+* GET /auth/check_token - Проверка валидности токена
+* PATCH /auth/users/{user_id} - Изменение данных пользователя
+* GET /auth/users/{user_id} - Получение данных о конкретном пользователе
+* DELETE /auth/users/{user_id} - Деактивация пользователя (мягкое удаление)
+* GET /auth/users - Получение списка активных пользователей
 
 ## Автор
 Зуева Дарья Дмитриевна
