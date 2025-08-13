@@ -70,7 +70,6 @@ Swagger - http://localhost:8000/docs
 Redoc - http://localhost:8000/redoc
 
 #### API Endpoints
-##### Аутентификация
 * POST /auth/register - Регистрация нового пользователя
 * POST /auth/token - Получение JWT токенов
 * POST /auth/refresh - Обновление токенов
