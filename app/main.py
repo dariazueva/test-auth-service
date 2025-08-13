@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from app.routers import auth, permission
+from app.routers import auth
 from fastapi import FastAPI, Request
 from loguru import logger
 from starlette.responses import JSONResponse
@@ -20,8 +20,8 @@ async def log_middleware(request: Request, call_next):
     log_id = str(uuid4())
     with logger.contextualize(log_id=log_id):
         try:
-            response = await call_next(call_next)
-            if response.status_code in [401, 402, 403, 404]:
+            response = await call_next(request)
+            if response.status_code in [401, 403, 404]:
                 logger.warning(f"Request to {request.url.path} failed")
             else:
                 logger.info("Successfully accessed " + request.url.path)
@@ -32,4 +32,3 @@ async def log_middleware(request: Request, call_next):
 
 
 app.include_router(auth.router)
-app.include_router(permission.router)
